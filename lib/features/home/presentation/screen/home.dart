@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
               MaterialPageRoute(builder: (context) => const CartPage()));
         } else if (state is HomeNavigateToWishlistPageActionState) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const WishlistPage()));
+              MaterialPageRoute(builder: (context) =>  WishlistPage()));
         } else if (state is favouriteAdd) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Item Added Successfully")));

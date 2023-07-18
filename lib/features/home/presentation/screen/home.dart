@@ -12,6 +12,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    homeBloc.add(HomeInitialEvent());
+    // TODO: implement initState
+    super.initState();
+  }
+
   final HomeBloc homeBloc = HomeBloc();
   @override
   Widget build(BuildContext context) {
@@ -33,24 +40,39 @@ class _HomeState extends State<Home> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text("Grocery"),
-            centerTitle: true,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    homeBloc.add(HomeWishListButtonNavigateEvent());
-                  },
-                  icon: const Icon(Icons.favorite_border)),
-              IconButton(
-                  onPressed: () {
-                    homeBloc.add(HomeCartButtonNavigateEvent());
-                  },
-                  icon: const Icon(Icons.shopping_bag_outlined))
-            ],
-          ),
-        );
+        switch (state.runtimeType) {
+          case HomeLoadingState:
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+
+          case HomeLoadedSuccessState:
+            return Scaffold(
+              appBar: AppBar(
+                title: const Text("Grocery"),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        homeBloc.add(HomeWishListButtonNavigateEvent());
+                      },
+                      icon: const Icon(Icons.favorite_border)),
+                  IconButton(
+                      onPressed: () {
+                        homeBloc.add(HomeCartButtonNavigateEvent());
+                      },
+                      icon: const Icon(Icons.shopping_bag_outlined))
+                ],
+              ),
+            );
+
+          case HomeErrorState:
+            return SizedBox();
+          default:
+            return SizedBox();
+        }
       },
     );
   }

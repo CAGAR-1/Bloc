@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_project/data/grocery_data.dart';
 import 'package:flutter_bloc_project/features/cart/presentation/screen/cart.dart';
 import 'package:flutter_bloc_project/features/home/bloc/home_bloc.dart';
+import 'package:flutter_bloc_project/features/home/presentation/screen/product_tile_widget.dart';
 import 'package:flutter_bloc_project/features/wishlist/presentation/screen/wishlist.dart';
 
 class Home extends StatefulWidget {
@@ -49,6 +51,7 @@ class _HomeState extends State<Home> {
             );
 
           case HomeLoadedSuccessState:
+            final successstate = state as HomeLoadedSuccessState;
             return Scaffold(
               appBar: AppBar(
                 title: const Text("Grocery"),
@@ -66,6 +69,13 @@ class _HomeState extends State<Home> {
                       icon: const Icon(Icons.shopping_bag_outlined))
                 ],
               ),
+              body: ListView.builder(
+                  itemCount: successstate.products.length,
+                  itemBuilder: (context, index) {
+                    return ProductTileWidget(
+                        homeBloc: homeBloc,
+                        productDataModel: successstate.products[index]);
+                  }),
             );
 
           case HomeErrorState:
